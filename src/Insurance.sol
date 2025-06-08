@@ -9,11 +9,14 @@ pragma solidity 0.8.28;
  * @notice Please this is not meant for production
  */
 contract Insurance{
+    // create insurance policy with necessary params
     function createPollicy() external {}
+    // logic to make insurance payments
     function depositPayment() external{}
+    // processing payout
     function processPayout() external {}
+    // submits insurance claims
     function submitClaim() external{}
-    function approveClaim() external {}
-
-    
+    // Insurance body approves claim
+    function approveClaim() external {}    
 }
