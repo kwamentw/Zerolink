@@ -20,3 +20,6 @@ contract Insurance{
     // Insurance body approves claim
     function approveClaim() external {}    
 }
+//////////////////////////////////////////
+//////////////////////////////////////////
+// Im feeling lazy! I have to work 
