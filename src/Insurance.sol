@@ -10,8 +10,12 @@ pragma solidity 0.8.28;
  */
 contract Insurance{
 
+    address manager;
+
     error PolicyExists();
-    event PolicyCreated(address polcyHolder, uint256 expiration);
+    error PolicyNonExistent();
+    event PolicyCreated(address policyHolder, uint256 expiration, uint256 _policyID);
+    event PolicyUpdated(address policyHolder, uint256 _policyId);
 
     struct Policy {
         address policyHolder;
@@ -22,12 +26,25 @@ contract Insurance{
         address payoutReceiver;
     }
 
+    uint256 policyID; // to track number of policies created 
+
     // one that creates the policy should be different from the user, the user should only make payments
 
-    mapping (address _policyHolder => Policy holdersPolicy) public policies;
+    mapping (uint256 policyId => Policy holdersPolicy) public policies;
 
-    // create insurance policy with necessary params
-    function createPolicy(Policy memory newPolicy) external payable{
+    // one user can hold more than one policy
+    mapping(uint256 policyId => address _policyHolder) holderOfPolicyId;
+
+    constructor(address _manager){
+        manager = _manager;
+    }
+
+    modifier onlyManager {
+        require(msg.sender == manager);
+        _;
+    }
+
+    function createPolicy(Policy memory newPolicy) external payable onlyManager returns(uint256){
 
         address policyHolder = newPolicy.policyHolder;
 
@@ -35,15 +52,32 @@ contract Insurance{
         require(newPolicy.coverageLimitAmt > 0 && newPolicy.premiumAmtToPay > 0, "invalid coverage Amount & premiumAmt");
         require(newPolicy.payoutReceiver != address(0), "invalid receiver");
 
-        if(policyHolder != address(0)){
-            policies[policyHolder] = newPolicy;
-            emit PolicyCreated(policyHolder, newPolicy.expiration);
+        if(policies[policyID].policyHolder != address(0)){
+            holderOfPolicyId[policyID] = newPolicy.policyHolder;
+            policies[policyID] = newPolicy;
+            emit PolicyCreated(policyHolder, newPolicy.expiration, policyID);
         } else {
             revert PolicyExists();
         }
+
+        return policyID++;
     }
     // to update insurance policy
-    function updatePolicy() public {}
+    function updatePolicy(uint256 _policyId, Policy memory updatedPolicy) external onlyManager{
+        address policyHolder = updatedPolicy.policyHolder;
+        require(policyHolder != address(0), "invalid new policy holder");
+        require(updatedPolicy.expiration > block.timestamp && policies[_policyId].expiration > block.timestamp, "invalid updated expiration");
+        require (updatedPolicy.payoutReceiver != address(0), "invalid receiver");
+
+        if(updatedPolicy.policyHolder == address(0)){
+            revert PolicyNonExistent();
+        }
+
+        policies[_policyId] = updatedPolicy;
+        holderOfPolicyId[_policyId] = policyHolder;
+
+        emit PolicyUpdated(policyHolder, _policyId);
+    }
     // deletes the policy
     function terminatePolicy() external {}
     // logic to make insurance payments
