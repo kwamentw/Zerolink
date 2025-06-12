@@ -16,6 +16,7 @@ contract Insurance{
     error PolicyNonExistent();
     event PolicyCreated(address policyHolder, uint256 expiration, uint256 _policyID);
     event PolicyUpdated(address policyHolder, uint256 _policyId);
+    event POlicyTerminated(uint256 policyId, address policyHolder);
 
     struct Policy {
         address policyHolder;
@@ -79,7 +80,17 @@ contract Insurance{
         emit PolicyUpdated(policyHolder, _policyId);
     }
     // deletes the policy
-    function terminatePolicy() external {}
+    function terminatePolicy(uint256 _policyId) external onlyManager{
+        Policy memory policyToCancel = policies[_policyId];
+        require(block.timestamp >= policyToCancel.expiration, "Trying to terminate an active policy");
+        require(policyToCancel.policyHolder != address(0), "invalid policy");
+        
+        delete policies[_policyId];
+        delete holderOfPolicyId[_policyId];
+
+        emit POlicyTerminated(_policyId, policyToCancel.policyHolder);
+
+    }
     // logic to make insurance payments
     function depositPayment() external{}
     // processing payout
