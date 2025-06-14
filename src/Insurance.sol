@@ -17,6 +17,7 @@ contract Insurance{
     event PolicyCreated(address policyHolder, uint256 expiration, uint256 _policyID);
     event PolicyUpdated(address policyHolder, uint256 _policyId);
     event POlicyTerminated(uint256 policyId, address policyHolder);
+    event PaymentDeposited(address holder, uint256 _policyId);
 
     struct Policy {
         address policyHolder;
@@ -92,7 +93,13 @@ contract Insurance{
 
     }
     // logic to make insurance payments
-    function depositPayment() external{}
+    function depositPayment(uint256 _policyId) external payable{
+        require(policies[_policyId].premiumAmtToPay == msg.value, "invalid amount to be paid");
+        policies[_policyId].payCounter += msg.value;
+        
+        emit PaymentDeposited(policies[_policyId].policyHolder, _policyId);
+
+    }
     // processing payout
     function processPayout() external {}
     // submits insurance claims
