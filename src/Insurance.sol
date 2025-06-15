@@ -18,6 +18,9 @@ contract Insurance{
     event PolicyUpdated(address policyHolder, uint256 _policyId);
     event POlicyTerminated(uint256 policyId, address policyHolder);
     event PaymentDeposited(address holder, uint256 _policyId);
+    event PayoutProcessed();
+    event ClaimSubmutted();
+    event ClaimApproved();
 
     struct Policy {
         address policyHolder;
@@ -98,10 +101,11 @@ contract Insurance{
         policies[_policyId].payCounter += msg.value;
         
         emit PaymentDeposited(policies[_policyId].policyHolder, _policyId);
-
     }
     // processing payout
-    function processPayout() external {}
+    function processPayout() external {
+
+    }
     // submits insurance claims
     function submitClaim() external{}
     // Insurance body approves claim
