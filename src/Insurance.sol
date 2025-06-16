@@ -12,9 +12,12 @@ contract Insurance{
 
     address manager;
 
+    //errors 
     error PolicyExists();
     error PolicyNonExistent();
     event PolicyCreated(address policyHolder, uint256 expiration, uint256 _policyID);
+
+    //events
     event PolicyUpdated(address policyHolder, uint256 _policyId);
     event POlicyTerminated(uint256 policyId, address policyHolder);
     event PaymentDeposited(address holder, uint256 _policyId);
