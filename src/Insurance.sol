@@ -11,6 +11,7 @@ pragma solidity 0.8.28;
 contract Insurance{
 
     address manager;
+    address owner;
 
     //errors 
     error PolicyExists();
@@ -24,6 +25,7 @@ contract Insurance{
     event PayoutProcessed();
     event ClaimSubmutted();
     event ClaimApproved();
+    event ManagerChanged(address oldAddress, address newAddress);
 
     struct Policy {
         address policyHolder;
@@ -45,10 +47,16 @@ contract Insurance{
 
     constructor(address _manager){
         manager = _manager;
+        owner = msg.sender;
     }
 
     modifier onlyManager {
         require(msg.sender == manager);
+        _;
+    }
+
+    modifier onlyOwner{
+        require(msg.sender == owner);
         _;
     }
 
@@ -112,5 +120,13 @@ contract Insurance{
     // submits insurance claims
     function submitClaim() external{}
     // Insurance body approves claim
-    function approveClaim() external {}    
+    function approveClaim() external {}  
+
+    function changeManager(address newManager) external onlyOwner{
+        address oldManager = manager;
+        require(newManager != address(0), "invalid address");
+        require(newManager != oldManager, "same address");
+        manager = newManager;
+        emit ManagerChanged(oldManager, newManager);
+    }  
 }
