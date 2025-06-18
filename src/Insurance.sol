@@ -118,8 +118,18 @@ contract Insurance{
 
     }
     // submits insurance claims
+    // submits claim for payout incase of damage
+    //check coverage of insurance see
+    // check whether user has current license
+    // user should have paid for at least 6 monts
+    //emit submission
     function submitClaim() external{}
+
     // Insurance body approves claim
+    // only manager can approve claim
+    // if user qualifies for claim payout
+    // emit event
+    // record claim details
     function approveClaim() external {}  
 
     function changeManager(address newManager) external onlyOwner{
