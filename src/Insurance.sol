@@ -23,7 +23,7 @@ contract Insurance{
     event POlicyTerminated(uint256 policyId, address policyHolder);
     event PaymentDeposited(address holder, uint256 _policyId);
     event PayoutProcessed();
-    event ClaimSubmutted();
+    event ClaimSubmitted(uint256 claimId);
     event ClaimApproved();
     event ManagerChanged(address oldAddress, address newAddress);
 
@@ -34,6 +34,7 @@ contract Insurance{
         uint256 expiration;
         uint256 payCounter;
         address payoutReceiver;
+        uint256 policyCreationTimestamp;
     }
 
     uint256 policyID; // to track number of policies created 
@@ -44,6 +45,7 @@ contract Insurance{
 
     // one user can hold more than one policy
     mapping(uint256 policyId => address _policyHolder) holderOfPolicyId;
+    mapping (uint256 policyId => uint256 amountClaimed) policyClaims;
 
     constructor(address _manager){
         manager = _manager;
@@ -68,6 +70,8 @@ contract Insurance{
         require(newPolicy.coverageLimitAmt > 0 && newPolicy.premiumAmtToPay > 0, "invalid coverage Amount & premiumAmt");
         require(newPolicy.payoutReceiver != address(0), "invalid receiver");
 
+        newPolicy[policyID].policyCreationTimestamp = block.timestmap;
+
         if(policies[policyID].policyHolder != address(0)){
             holderOfPolicyId[policyID] = newPolicy.policyHolder;
             policies[policyID] = newPolicy;
@@ -75,6 +79,7 @@ contract Insurance{
         } else {
             revert PolicyExists();
         }
+
 
         return policyID++;
     }
@@ -123,7 +128,16 @@ contract Insurance{
     // check whether user has current license
     // user should have paid for at least 6 monts
     //emit submission
-    function submitClaim() external{}
+    function submitClaim(uint256 _policyId, uint256 amount) external returns(uint256 claimId){
+        require(policies[_policyId].coverageLimitAmt > amount, "Insurance does not cover");
+        uint256 periodInsurancePaid = block.timestamp > policies[_policyId].policyCreationTimestamp ? block.timestamp - policies[_policyId].policyCreationTimestamp : 0;
+        require(periodInsurancePaid / 1 weeks >= 24, "You are not legible for a claim");
+
+        policyClaims[_policyId] = amount;
+
+        emit ClaimSubmitted(claimId);
+
+    }
 
     // Insurance body approves claim
     // only manager can approve claim
