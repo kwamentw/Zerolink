@@ -119,8 +119,8 @@ contract Insurance{
         emit PaymentDeposited(policies[_policyId].policyHolder, _policyId);
     }
     // processing payout
-    function processPayout() external {
-
+    function processPayout(uint256 policyid) external {
+        require(policyClaims[policyid] > 0);
     }
     // submits insurance claims
     // submits claim for payout incase of damage
