@@ -62,6 +62,7 @@ contract Insurance{
         _;
     }
 
+    //creates insurance policy
     function createPolicy(Policy memory newPolicy) external payable onlyManager returns(uint256){
 
         address policyHolder = newPolicy.policyHolder;
@@ -70,7 +71,7 @@ contract Insurance{
         require(newPolicy.coverageLimitAmt > 0 && newPolicy.premiumAmtToPay > 0, "invalid coverage Amount & premiumAmt");
         require(newPolicy.payoutReceiver != address(0), "invalid receiver");
 
-        newPolicy[policyID].policyCreationTimestamp = block.timestmap;
+        policies[policyID].policyCreationTimestamp = block.timestamp;
 
         if(policies[policyID].policyHolder != address(0)){
             holderOfPolicyId[policyID] = newPolicy.policyHolder;
