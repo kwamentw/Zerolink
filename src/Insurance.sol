@@ -84,6 +84,9 @@ contract Insurance{
 
         return policyID++;
     }
+
+
+
     // to update insurance policy
     function updatePolicy(uint256 _policyId, Policy memory updatedPolicy) external onlyManager{
         address policyHolder = updatedPolicy.policyHolder;
@@ -100,6 +103,9 @@ contract Insurance{
 
         emit PolicyUpdated(policyHolder, _policyId);
     }
+
+
+
     // deletes the policy
     function terminatePolicy(uint256 _policyId) external onlyManager{
         Policy memory policyToCancel = policies[_policyId];
@@ -112,6 +118,8 @@ contract Insurance{
         emit POlicyTerminated(_policyId, policyToCancel.policyHolder);
 
     }
+
+
     // logic to make insurance payments
     function depositPayment(uint256 _policyId) external payable{
         require(policies[_policyId].premiumAmtToPay == msg.value, "invalid amount to be paid");
@@ -119,6 +127,8 @@ contract Insurance{
         
         emit PaymentDeposited(policies[_policyId].policyHolder, _policyId);
     }
+
+
     // processing payout
     function processPayout(uint256 policyid) external {
         require(policyClaims[policyid] > 0);
@@ -140,12 +150,16 @@ contract Insurance{
 
     }
 
+
+
     // Insurance body approves claim
     // only manager can approve claim
     // if user qualifies for claim payout
     // emit event
     // record claim details
     function approveClaim() external {}  
+
+
 
     function changeManager(address newManager) external onlyOwner{
         address oldManager = manager;
@@ -155,3 +169,6 @@ contract Insurance{
         emit ManagerChanged(oldManager, newManager);
     }  
 }
+
+
+///////////// Fack i am at rock bottom now //////////// i have to get up//////// so i do nto regret this day
