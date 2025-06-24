@@ -10,8 +10,8 @@ pragma solidity 0.8.28;
  */
 contract Insurance{
 
-    address manager;
-    address owner;
+    address manager; // manages insurance policies
+    address owner; // can add and remove managers
 
     //errors 
     error PolicyExists();
@@ -28,13 +28,13 @@ contract Insurance{
     event ManagerChanged(address oldAddress, address newAddress);
 
     struct Policy {
-        address policyHolder;
-        uint256 coverageLimitAmt;
-        uint256 premiumAmtToPay;
-        uint256 expiration;
-        uint256 payCounter;
-        address payoutReceiver;
-        uint256 policyCreationTimestamp;
+        address policyHolder; // owner of policy
+        uint256 coverageLimitAmt; // the limit this insurance covers up to
+        uint256 premiumAmtToPay; // amount holder pays every month
+        uint256 expiration;// time policy will expire
+        uint256 payCounter; // how many times holder has paid
+        address payoutReceiver; // the address receiving the payout incase of any claim
+        uint256 policyCreationTimestamp; // the time policy was created
     }
 
     uint256 policyID; // to track number of policies created 
@@ -171,4 +171,3 @@ contract Insurance{
 }
 
 
-///////////// Fack i am at rock bottom now //////////// i have to get up//////// so i do nto regret this day
