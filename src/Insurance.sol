@@ -26,6 +26,7 @@ contract Insurance{
     event ClaimSubmitted(uint256 claimId);
     event ClaimApproved();
     event ManagerChanged(address oldAddress, address newAddress);
+    event ClaimApprovedNPaid(uint256 policyID, uint256 amt);
 
     struct Policy {
         address policyHolder; // owner of policy
@@ -128,11 +129,6 @@ contract Insurance{
         emit PaymentDeposited(policies[_policyId].policyHolder, _policyId);
     }
 
-
-    // processing payout
-    function processPayout(uint256 policyid) external {
-        require(policyClaims[policyid] > 0);
-    }
     // submits insurance claims
     // submits claim for payout incase of damage
     //check coverage of insurance see
@@ -150,14 +146,23 @@ contract Insurance{
 
     }
 
-
-
     // Insurance body approves claim
     // only manager can approve claim
     // if user qualifies for claim payout
     // emit event
     // record claim details
-    function approveClaim() external {}  
+    function approveAndPayoutClaim(uint256 _policyId) external onlyManager{
+        require(policyClaims[_policyId] != 0, "invalid claim");
+        uint256 amountToPay = policyClaims[_policyId];
+        address receiver = policies[_policyId].payoutReceiver;
+
+        (bool okay, ) = receiver.call{value: amountToPay}("");
+        require(okay,"not sent");
+
+        //addd var that tracks payout with policies
+
+        emit ClaimApprovedNPaid(_policyId, amountToPay);
+    }  
 
 
 
