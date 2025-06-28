@@ -47,6 +47,7 @@ contract Insurance{
     // one user can hold more than one policy
     mapping(uint256 policyId => address _policyHolder) holderOfPolicyId;
     mapping (uint256 policyId => uint256 amountClaimed) policyClaims;
+    mapping(uint256 policyId => uint256 amount) claimsPaid;
 
     constructor(address _manager){
         manager = _manager;
@@ -159,10 +160,12 @@ contract Insurance{
         (bool okay, ) = receiver.call{value: amountToPay}("");
         require(okay,"not sent");
 
-        //addd var that tracks payout with policies
+        claimsPaid[_policyId] += amountToPay;
 
         emit ClaimApprovedNPaid(_policyId, amountToPay);
     }  
+
+    function DenyClaim(uint256 _policyId) external onlyManager{}
 
 
 
