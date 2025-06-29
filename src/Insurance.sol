@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.28;
+pragma solidity 0.8.26;
 
 //import layer zero interfaces
 
@@ -65,7 +65,7 @@ contract Insurance{
     }
 
     //creates insurance policy
-    function createPolicy(Policy memory newPolicy) external payable onlyManager returns(uint256){
+    function createPolicy(Policy memory newPolicy) external onlyManager returns(uint256){
 
         address policyHolder = newPolicy.policyHolder;
 
@@ -75,14 +75,13 @@ contract Insurance{
 
         policies[policyID].policyCreationTimestamp = block.timestamp;
 
-        if(policies[policyID].policyHolder != address(0)){
+        if(policies[policyID].policyHolder == address(0)){
             holderOfPolicyId[policyID] = newPolicy.policyHolder;
             policies[policyID] = newPolicy;
             emit PolicyCreated(policyHolder, newPolicy.expiration, policyID);
         } else {
             revert PolicyExists();
         }
-
 
         return policyID++;
     }
@@ -176,6 +175,10 @@ contract Insurance{
         manager = newManager;
         emit ManagerChanged(oldManager, newManager);
     }  
+
+    function getPolicyHolder(uint256 policyId) public view returns(address){
+        return policies[policyId].policyHolder;
+    }
 }
 
 
