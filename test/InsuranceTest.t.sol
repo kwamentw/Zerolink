@@ -30,4 +30,12 @@ contract InsuranceTest is Test {
         assertEq(holder, address(0xabc));
     }
 
+    function testUpdatePolicy() public {}
+    function testTerminatePolicy() public {}
+    function testDepositPayment() public {}
+    function testSubmitClaim() public {}
+    function testPayoutClaim() public {}
+    function testDenyClaim() public {}
+    function testChangeManager() public{}
+
 }
