@@ -16,9 +16,9 @@ contract Insurance{
     //errors 
     error PolicyExists();
     error PolicyNonExistent();
-    event PolicyCreated(address policyHolder, uint256 expiration, uint256 _policyID);
 
     //events
+    event PolicyCreated(address policyHolder, uint256 expiration, uint256 _policyID);
     event PolicyUpdated(address policyHolder, uint256 _policyId);
     event POlicyTerminated(uint256 policyId, address policyHolder);
     event PaymentDeposited(address holder, uint256 _policyId);
@@ -27,6 +27,7 @@ contract Insurance{
     event ClaimApproved();
     event ManagerChanged(address oldAddress, address newAddress);
     event ClaimApprovedNPaid(uint256 policyID, uint256 amt);
+    event ClaimDenied(uint256 policyidee);
 
     struct Policy {
         address policyHolder; // owner of policy
@@ -146,11 +147,6 @@ contract Insurance{
 
     }
 
-    // Insurance body approves claim
-    // only manager can approve claim
-    // if user qualifies for claim payout
-    // emit event
-    // record claim details
     function approveAndPayoutClaim(uint256 _policyId) external onlyManager{
         require(policyClaims[_policyId] != 0, "invalid claim");
         uint256 amountToPay = policyClaims[_policyId];
@@ -164,7 +160,11 @@ contract Insurance{
         emit ClaimApprovedNPaid(_policyId, amountToPay);
     }  
 
-    function DenyClaim(uint256 _policyId) external onlyManager{}
+    function DenyClaim(uint256 _policyId) external onlyManager{
+        require(policyClaims[_policyId] != 0, "no claim");
+        delete policyClaims[_policyId];
+        emit ClaimDenied(_policyId);
+    }
 
 
 
