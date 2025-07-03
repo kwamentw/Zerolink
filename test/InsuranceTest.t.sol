@@ -11,6 +11,22 @@ contract InsuranceTest is Test {
         insure = new Insurance(address(this));
     }
 
+    function createPoli() public returns(uint256 policyId){
+        vm.startPrank(address(this));
+        Insurance.Policy memory newPolicy = Insurance.Policy({
+            policyHolder: address(0xabc),
+            coverageLimitAmt: 9000000e18,
+            premiumAmtToPay: 7500e18,
+            expiration: block.timestamp + 30000,
+            payCounter:0,
+            payoutReceiver: address(0xbac),
+            policyCreationTimestamp: block.timestamp 
+        });
+
+        policyId = insure.createPolicy(newPolicy);
+        vm.stopPrank();
+    }
+
     function testCreatePolicy() public {
         vm.startPrank(address(this));
         Insurance.Policy memory newPolicy = Insurance.Policy({
@@ -30,7 +46,24 @@ contract InsuranceTest is Test {
         assertEq(holder, address(0xabc));
     }
 
-    function testUpdatePolicy() public {}
+    function testUpdatePolicy() public {
+        uint256 policyIdee = createPoli();
+
+        Insurance.Policy memory updatedPolicy = Insurance.Policy({
+            policyHolder: address(0xdac),
+            coverageLimitAmt: 60000e18,
+            premiumAmtToPay: 7500e18,
+            expiration: block.timestamp + 40000,
+            payCounter:0,
+            payoutReceiver: address(0xbac),
+            policyCreationTimestamp: block.timestamp 
+        });
+
+        insure.updatePolicy(policyIdee, updatedPolicy);
+        address holder = insure.getPolicyHolder(policyIdee); 
+        assertEq(holder, address(0xdac));
+        
+    }
     function testTerminatePolicy() public {}
     function testDepositPayment() public {}
     function testSubmitClaim() public {}
