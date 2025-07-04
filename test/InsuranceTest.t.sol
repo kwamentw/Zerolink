@@ -64,7 +64,15 @@ contract InsuranceTest is Test {
         assertEq(holder, address(0xdac));
         
     }
-    function testTerminatePolicy() public {}
+    function testTerminatePolicy() public {
+        uint256 policyIdee = createPoli();
+
+        vm.warp(block.timestamp + 80000);
+        insure.terminatePolicy(policyIdee);
+
+        address holder = insure.getPolicyHolder(policyIdee);
+        assertEq(address(0), holder);
+    }
     function testDepositPayment() public {}
     function testSubmitClaim() public {}
     function testPayoutClaim() public {}
