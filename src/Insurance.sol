@@ -179,6 +179,10 @@ contract Insurance{
     function getPolicyHolder(uint256 policyId) public view returns(address){
         return policies[policyId].policyHolder;
     }
+
+    function getPolicyPayCounter(uint256 policyId) public view returns(uint256){
+        return policies[policyId].payCounter;
+    }
 }
 
 

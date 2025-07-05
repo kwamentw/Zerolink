@@ -73,7 +73,13 @@ contract InsuranceTest is Test {
         address holder = insure.getPolicyHolder(policyIdee);
         assertEq(address(0), holder);
     }
-    function testDepositPayment() public {}
+    function testDepositPayment() public {
+        uint256 policyIdee = createPoli();
+
+        insure.depositPayment{value: 7500e18}(policyIdee);
+        uint256 amountDeposited = insure.getPolicyPayCounter(policyIdee);
+        assertEq(amountDeposited, 7500e18);
+    }
     function testSubmitClaim() public {}
     function testPayoutClaim() public {}
     function testDenyClaim() public {}
