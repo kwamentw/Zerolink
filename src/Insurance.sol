@@ -183,6 +183,14 @@ contract Insurance{
     function getPolicyPayCounter(uint256 policyId) public view returns(uint256){
         return policies[policyId].payCounter;
     }
+
+    function getClaimAmount(uint256 policyId) public view returns(uint256){
+        return policyClaims[policyId];
+    }
+
+    function getClaimPaid(uint256 policyId) public view returns(uint256){
+        return claimsPaid[policyId];
+    }
 }
 
 

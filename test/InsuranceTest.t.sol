@@ -80,8 +80,39 @@ contract InsuranceTest is Test {
         uint256 amountDeposited = insure.getPolicyPayCounter(policyIdee);
         assertEq(amountDeposited, 7500e18);
     }
-    function testSubmitClaim() public {}
-    function testPayoutClaim() public {}
+    function testSubmitClaim() public {
+        //creating policy
+        uint256 policyIdee = createPoli();
+
+        //making first payment
+        insure.depositPayment{value: 7500e18}(policyIdee);
+        vm.warp(25 weeks);
+        // submiting claim
+        uint256 claimid = insure.submitClaim(policyIdee, 500e18);
+        uint256 claimAmount = insure.getClaimAmount(claimid);
+
+        assertEq(claimAmount, 500e18);
+
+
+    }
+    function testPayoutClaim() public {
+        //creating policy
+        uint256 policyIdee = createPoli();
+
+        //making first payment
+        insure.depositPayment{value: 7500e18}(policyIdee);
+        vm.warp(25 weeks);
+        // submiting claim
+        uint256 claimid = insure.submitClaim(policyIdee, 500e18);
+        uint256 claimAmount = insure.getClaimAmount(claimid);
+
+        //approving claim
+        insure.approveAndPayoutClaim(claimid);
+
+        uint256 claimPaid = insure.getClaimPaid(claimid);
+
+        assertEq(claimPaid, claimAmount);
+    }
     function testDenyClaim() public {}
     function testChangeManager() public{}
 
