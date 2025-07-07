@@ -113,7 +113,22 @@ contract InsuranceTest is Test {
 
         assertEq(claimPaid, claimAmount);
     }
-    function testDenyClaim() public {}
+    function testDenyClaim() public {
+        //creating policy
+        uint256 policyIdee = createPoli();
+        //making first payment
+        insure.depositPayment{value: 7500e18}(policyIdee);
+        vm.warp(25 weeks);
+        // submiting claim
+        uint256 claimid = insure.submitClaim(policyIdee, 500e18);
+
+        insure.DenyClaim(policyIdee);
+
+        uint256 claimPaid = insure.getClaimPaid(claimid);
+
+        assertEq(claimPaid, 0);
+
+    }
     function testChangeManager() public{}
 
 }
