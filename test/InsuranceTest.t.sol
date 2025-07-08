@@ -4,6 +4,11 @@ pragma solidity 0.8.26;
 import {Test} from "forge-std/Test.sol";
 import {Insurance} from "../src/Insurance.sol";
 
+/**
+ * @title Insurance test
+ * @author 4B
+ * @notice This tests the main contract to see whether it works
+ */
 contract InsuranceTest is Test {
     Insurance insure;
 

@@ -65,7 +65,11 @@ contract Insurance{
         _;
     }
 
-    //creates insurance policy
+    /**
+     * creates a new policy for a policy holder
+     * @param newPolicy the policy to be created
+     * only manager can call this
+     */
     function createPolicy(Policy memory newPolicy) external onlyManager returns(uint256){
 
         address policyHolder = newPolicy.policyHolder;
@@ -89,7 +93,11 @@ contract Insurance{
 
 
 
-    // to update insurance policy
+    /**
+     * Updates a policy of a policy Holder
+     * @param _policyId old policy id of policy holder
+     * @param updatedPolicy new policy to be updated
+     */
     function updatePolicy(uint256 _policyId, Policy memory updatedPolicy) external onlyManager{
         address policyHolder = updatedPolicy.policyHolder;
         require(policyHolder != address(0), "invalid new policy holder");
@@ -108,7 +116,10 @@ contract Insurance{
 
 
 
-    // deletes the policy
+    /**
+     * Terminates an existing policy
+     * @param _policyId id of policy to terminate
+     */
     function terminatePolicy(uint256 _policyId) external onlyManager{
         Policy memory policyToCancel = policies[_policyId];
         require(block.timestamp >= policyToCancel.expiration, "Trying to terminate an active policy");
