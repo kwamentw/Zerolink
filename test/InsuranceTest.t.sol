@@ -129,6 +129,12 @@ contract InsuranceTest is Test {
         assertEq(claimPaid, 0);
 
     }
-    function testChangeManager() public{}
+    function testChangeManager() public{
+        address newManager = address(0xabc);
+        address oldManager = insure.manager();
+        insure.changeManager(newManager);
+
+        assertNotEq(newManager, oldManager);
+    }
 
 }

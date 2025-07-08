@@ -10,7 +10,7 @@ pragma solidity 0.8.26;
  */
 contract Insurance{
 
-    address manager; // manages insurance policies
+    address public manager; // manages insurance policies
     address owner; // can add and remove managers
 
     //errors 
