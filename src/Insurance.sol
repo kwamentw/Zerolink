@@ -133,7 +133,10 @@ contract Insurance{
     }
 
 
-    // logic to make insurance payments
+    /**
+     * Makes monthly payment of insurance
+     * @param _policyId policy id to make payment of
+     */
     function depositPayment(uint256 _policyId) external payable{
         require(policies[_policyId].premiumAmtToPay == msg.value, "invalid amount to be paid");
         policies[_policyId].payCounter += msg.value;
@@ -141,12 +144,11 @@ contract Insurance{
         emit PaymentDeposited(policies[_policyId].policyHolder, _policyId);
     }
 
-    // submits insurance claims
-    // submits claim for payout incase of damage
-    //check coverage of insurance see
-    // check whether user has current license
-    // user should have paid for at least 6 monts
-    //emit submission
+    /**
+     * Helps policy Holders to make insurance claims
+     * @param _policyId the key to the policy to make the claim
+     * @param amount amount policy holder wants to claim
+     */
     function submitClaim(uint256 _policyId, uint256 amount) external returns(uint256 claimId){
         require(policies[_policyId].coverageLimitAmt > amount, "Insurance does not cover");
         uint256 periodInsurancePaid = block.timestamp > policies[_policyId].policyCreationTimestamp ? block.timestamp - policies[_policyId].policyCreationTimestamp : 0;
@@ -158,6 +160,12 @@ contract Insurance{
 
     }
 
+    /**
+     * Approves claim made by policy holder
+     * Also pays out claims
+     * @param _policyId policy id to approve
+     * only manager can call this function
+     */
     function approveAndPayoutClaim(uint256 _policyId) external onlyManager{
         require(policyClaims[_policyId] != 0, "invalid claim");
         uint256 amountToPay = policyClaims[_policyId];
@@ -171,14 +179,22 @@ contract Insurance{
         emit ClaimApprovedNPaid(_policyId, amountToPay);
     }  
 
+    /**
+     * Rejects claim of policy holder
+     * @param _policyId policy id to deny
+     * only manager can call this function
+     */
     function DenyClaim(uint256 _policyId) external onlyManager{
         require(policyClaims[_policyId] != 0, "no claim");
         delete policyClaims[_policyId];
         emit ClaimDenied(_policyId);
     }
 
-
-
+    /**
+     * Changes manager of the protocol
+     * @param newManager address of new manager
+     * only owner can chnage manager
+     */
     function changeManager(address newManager) external onlyOwner{
         address oldManager = manager;
         require(newManager != address(0), "invalid address");
