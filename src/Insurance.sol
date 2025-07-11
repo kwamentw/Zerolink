@@ -203,6 +203,10 @@ contract Insurance{
         emit ManagerChanged(oldManager, newManager);
     }  
 
+    /**
+     * get address of policy holder
+     * @param policyId id of policy
+     */
     function getPolicyHolder(uint256 policyId) public view returns(address){
         return policies[policyId].policyHolder;
     }
