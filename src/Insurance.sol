@@ -204,13 +204,18 @@ contract Insurance{
     }  
 
     /**
-     * get address of policy holder
+     * returns address of policy holder
      * @param policyId id of policy
      */
     function getPolicyHolder(uint256 policyId) public view returns(address){
         return policies[policyId].policyHolder;
     }
 
+    /**
+     * returns how many times policy holder has paid insurance
+     * used to insurance payments
+     * @param policyId id of policy
+     */
     function getPolicyPayCounter(uint256 policyId) public view returns(uint256){
         return policies[policyId].payCounter;
     }
