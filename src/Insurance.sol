@@ -220,6 +220,11 @@ contract Insurance{
         return policies[policyId].payCounter;
     }
 
+    /**
+     * Returns amount that policy holder has request to claim
+     * Tracks the holder's insurance claim request
+     * @param policyId id of desired policy
+     */
     function getClaimAmount(uint256 policyId) public view returns(uint256){
         return policyClaims[policyId];
     }
