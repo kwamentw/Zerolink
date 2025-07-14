@@ -221,7 +221,7 @@ contract Insurance{
     }
 
     /**
-     * Returns amount that policy holder has request to claim
+     * Returns total amount that policy holder has request to claim from a specific policy
      * Tracks the holder's insurance claim request
      * @param policyId id of desired policy
      */
@@ -229,6 +229,11 @@ contract Insurance{
         return policyClaims[policyId];
     }
 
+    /**
+     * Returns the amounts of claims paid for a certain policyId
+     * tracks total claims paid out
+     * @param policyId id of policy
+     */
     function getClaimPaid(uint256 policyId) public view returns(uint256){
         return claimsPaid[policyId];
     }
