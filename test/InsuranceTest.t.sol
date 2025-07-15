@@ -69,6 +69,26 @@ contract InsuranceTest is Test {
         assertEq(holder, address(0xdac));
         
     }
+
+    function testRevertUpdatePolicy() public {
+        // non existing id
+        uint256 id = 99;
+
+
+        Insurance.Policy memory updatedPolicy = Insurance.Policy({
+            policyHolder: address(0xdac),
+            coverageLimitAmt: 60000e18,
+            premiumAmtToPay: 7500e18,
+            expiration: block.timestamp + 40000,
+            payCounter:0,
+            payoutReceiver: address(0xbac),
+            policyCreationTimestamp: block.timestamp 
+        });
+
+        vm.expectRevert();
+        insure.updatePolicy(id, updatedPolicy);
+    }
+
     function testTerminatePolicy() public {
         uint256 policyIdee = createPoli();
 
@@ -78,6 +98,7 @@ contract InsuranceTest is Test {
         address holder = insure.getPolicyHolder(policyIdee);
         assertEq(address(0), holder);
     }
+
     function testDepositPayment() public {
         uint256 policyIdee = createPoli();
 
@@ -85,6 +106,14 @@ contract InsuranceTest is Test {
         uint256 amountDeposited = insure.getPolicyPayCounter(policyIdee);
         assertEq(amountDeposited, 7500e18);
     }
+
+    function testRevertDeposit() public {
+        uint256 policyIdee = createPoli();
+        vm.expectRevert();
+        // try to pay more than insurance payment
+        insure.depositPayment{value: 7766e18}(policyIdee);
+    }
+
     function testSubmitClaim() public {
         //creating policy
         uint256 policyIdee = createPoli();
@@ -140,6 +169,13 @@ contract InsuranceTest is Test {
         insure.changeManager(newManager);
 
         assertNotEq(newManager, oldManager);
+    }
+
+    function testRevertChangeManager() public{
+        address newManager = address(0xabc);
+        vm.prank(newManager);
+        vm.expectRevert();
+        insure.changeManager(newManager);
     }
 
 }
