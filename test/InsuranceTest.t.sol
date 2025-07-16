@@ -126,9 +126,19 @@ contract InsuranceTest is Test {
         uint256 claimAmount = insure.getClaimAmount(claimid);
 
         assertEq(claimAmount, 500e18);
-
-
     }
+
+    function testRevertSubmitClaim() public {
+        uint256 id = createPoli();
+        //making first ppayment
+        insure.depositPayment{value: 7500e18}(id);
+
+        vm.warp(25 weeks);
+        //lets claim
+        vm.expectRevert();
+        insure.submitClaim(id, 700000e18);
+        // see it reverts
+    } 
     function testPayoutClaim() public {
         //creating policy
         uint256 policyIdee = createPoli();
