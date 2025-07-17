@@ -99,6 +99,23 @@ contract InsuranceTest is Test {
         assertEq(address(0), holder);
     }
 
+    function testRevertTerminatePolicy() public {
+        uint256 id = createPoli();
+        //trying to terminate it before expiry
+        vm.expectRevert();
+        insure.terminatePolicy(id);
+    }
+
+    function testRevertAuthTerminate() public{
+        uint256 id = createPoli();
+        vm.warp(block.timestamp + 80000);
+        // a random address trying to terminate address(this) poilcy
+        vm.prank(address(0xddc));
+        vm.expectRevert();
+        insure.terminatePolicy(id);
+        //observe that it reverts
+    }
+
     function testDepositPayment() public {
         uint256 policyIdee = createPoli();
 
