@@ -156,6 +156,7 @@ contract InsuranceTest is Test {
         insure.submitClaim(id, 700000e18);
         // see it reverts
     } 
+
     function testPayoutClaim() public {
         //creating policy
         uint256 policyIdee = createPoli();
@@ -174,6 +175,16 @@ contract InsuranceTest is Test {
 
         assertEq(claimPaid, claimAmount);
     }
+
+    function testRevertPayoutClaim() public {
+        // let's see whether we can payout an invalid policy
+        // must revert
+        uint256 policyId = 99;
+        vm.expectRevert();
+        insure.approveAndPayoutClaim(policyId);
+
+    }
+
     function testDenyClaim() public {
         //creating policy
         uint256 policyIdee = createPoli();
@@ -190,6 +201,7 @@ contract InsuranceTest is Test {
         assertEq(claimPaid, 0);
 
     }
+
     function testChangeManager() public{
         address newManager = address(0xabc);
         address oldManager = insure.manager();
