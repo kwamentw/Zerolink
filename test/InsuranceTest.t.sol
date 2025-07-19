@@ -51,6 +51,23 @@ contract InsuranceTest is Test {
         assertEq(holder, address(0xabc));
     }
 
+    function testRevertCreatePolicy() public {
+        vm.startPrank(address(this));
+        Insurance.Policy memory newPolicy = Insurance.Policy({
+            policyHolder: address(0xabc),
+            coverageLimitAmt: 9000000e18,
+            premiumAmtToPay: 0,
+            expiration: block.timestamp + 30000,
+            payCounter:0,
+            payoutReceiver: address(0xbac),
+            policyCreationTimestamp: block.timestamp 
+        });
+
+        vm.expectRevert();
+        uint256 policyId = insure.createPolicy(newPolicy);
+        vm.stopPrank();
+    }
+
     function testUpdatePolicy() public {
         uint256 policyIdee = createPoli();
 
