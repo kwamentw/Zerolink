@@ -64,7 +64,7 @@ contract InsuranceTest is Test {
         });
 
         vm.expectRevert();
-        uint256 policyId = insure.createPolicy(newPolicy);
+        insure.createPolicy(newPolicy);
         vm.stopPrank();
     }
 
@@ -81,7 +81,24 @@ contract InsuranceTest is Test {
         });
 
         vm.expectRevert();
-        uint256 policyId = insure.createPolicy(newPolicy);
+        insure.createPolicy(newPolicy);
+        vm.stopPrank();
+    }
+
+    function testRevertReceiverCreatePolicy() public{
+        vm.startPrank(address(this));
+        Insurance.Policy memory newPolicy = Insurance.Policy({
+            policyHolder: address(this),
+            coverageLimitAmt: 9000000e18,
+            premiumAmtToPay: 0,
+            expiration:block.timestamp + 50000,
+            payCounter:0,
+            payoutReceiver: address(0),
+            policyCreationTimestamp: block.timestamp
+        });
+
+        vm.expectRevert();
+        insure.createPolicy(newPolicy);
         vm.stopPrank();
     }
 
