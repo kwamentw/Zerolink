@@ -55,6 +55,8 @@ contract Insurance{
         owner = msg.sender;
     }
 
+    ///// MODIFIERS
+
     modifier onlyManager {
         require(msg.sender == manager);
         _;
@@ -201,7 +203,9 @@ contract Insurance{
         require(newManager != oldManager, "same address");
         manager = newManager;
         emit ManagerChanged(oldManager, newManager);
-    }  
+    } 
+
+    /////////////// Getter functions ///////////////////
 
     /**
      * returns address of policy holder
