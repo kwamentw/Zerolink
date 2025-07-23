@@ -10,6 +10,7 @@ import {Insurance} from "../src/Insurance.sol";
  * @notice This tests the main contract to see whether it works
  */
 contract InsuranceTest is Test {
+    // contract to test
     Insurance insure;
 
     function setUp() public{

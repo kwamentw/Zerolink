@@ -41,14 +41,13 @@ contract Insurance{
 
     uint256 policyID; // to track number of policies created 
 
-    // one that creates the policy should be different from the user, the user should only make payments
+    mapping (uint256 policyId => Policy holdersPolicy) public policies; // policies of each policyId created
 
-    mapping (uint256 policyId => Policy holdersPolicy) public policies;
 
     // one user can hold more than one policy
-    mapping(uint256 policyId => address _policyHolder) holderOfPolicyId;
-    mapping (uint256 policyId => uint256 amountClaimed) policyClaims;
-    mapping(uint256 policyId => uint256 amount) claimsPaid;
+    mapping(uint256 policyId => address _policyHolder) holderOfPolicyId; // holders of policies(policyid)
+    mapping (uint256 policyId => uint256 amountClaimed) policyClaims; // amount of tokens claimed under a certain holders policy
+    mapping(uint256 policyId => uint256 amount) claimsPaid; // amount of cliams paid to holders unders the policyId
 
     constructor(address _manager){
         manager = _manager;
@@ -92,7 +91,6 @@ contract Insurance{
 
         return policyID++;
     }
-
 
 
     /**
