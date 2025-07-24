@@ -242,3 +242,10 @@ contract Insurance{
 }
 
 
+// integrating with layerZero
+// inherit from layerZeroBase
+// Send Cross-Chain Message
+// Receive Cross-Chain Message
+//  Set Trusted Remote address
+
+// import layerzero mocks to help test locally
