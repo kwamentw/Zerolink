@@ -249,3 +249,13 @@ contract Insurance{
 //  Set Trusted Remote address
 
 // import layerzero mocks to help test locally
+
+// but will this be possible with layerzero?
+/**
+ * Cross-chain Claim Submission: A user submits a claim on one chain (e.g., Arbitrum), and it’s approved + paid from a vault on another chain (e.g., Ethereum)
+ * Cross-chain Policy Synchronization: Policies created on one chain are registered on another for verification or off-chain auditing
+ * Cross-chain Payment Tracking: A payment made on Chain A updates the policy state on Chain B
+ * Multichain Claim Status Sync: Notify other chains that a claim was approved, denied, or paid
+ * 
+ * Yes i think its possible! lets see
+ */
