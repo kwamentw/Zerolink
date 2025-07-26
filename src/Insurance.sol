@@ -203,6 +203,17 @@ contract Insurance{
         emit ManagerChanged(oldManager, newManager);
     } 
 
+
+    function sendCrossChainMessage(uint16 _dstChainId, bytes calldata _dstAddress, uint8 action, bytes calldata data) external payable{
+
+    }
+
+    function lzReceivee(uint16, bytes memory, uint64, bytes memory payload) internal override {
+
+    }
+
+    receive() external payable {}
+
     /////////////// Getter functions ///////////////////
 
     /**
