@@ -203,11 +203,28 @@ contract Insurance{
         emit ManagerChanged(oldManager, newManager);
     } 
 
+//  * Cross-chain Claim Submission: A user submits a claim on one chain (e.g., Arbitrum), and it’s approved + paid from a vault on another chain (e.g., Ethereum)
+//  * Cross-chain Policy Synchronization: Policies created on one chain are registered on another for verification or off-chain auditing
+//  * Cross-chain Payment Tracking: A payment made on Chain A updates the policy state on Chain B
 
+    /**
+     * Send a message to another chain
+     * @param _dstChainId id of of the destination chain
+     * @param _dstAddress Destination address
+     * @param action type of action to perform on data
+     * @param data data sent across chain
+     */
     function sendCrossChainMessage(uint16 _dstChainId, bytes calldata _dstAddress, uint8 action, bytes calldata data) external payable{
 
     }
 
+    /**
+     * Receives message sent from other chain
+     * @param null 
+     * @param null 
+     * @param null 
+     * @param payload payload received from sent message
+     */
     function lzReceivee(uint16, bytes memory, uint64, bytes memory payload) internal override {
 
     }
@@ -261,12 +278,7 @@ contract Insurance{
 
 // import layerzero mocks to help test locally
 
-// but will this be possible with layerzero?
 /**
- * Cross-chain Claim Submission: A user submits a claim on one chain (e.g., Arbitrum), and it’s approved + paid from a vault on another chain (e.g., Ethereum)
- * Cross-chain Policy Synchronization: Policies created on one chain are registered on another for verification or off-chain auditing
- * Cross-chain Payment Tracking: A payment made on Chain A updates the policy state on Chain B
  * Multichain Claim Status Sync: Notify other chains that a claim was approved, denied, or paid
- * 
- * Yes i think its possible! lets see
+
  */
