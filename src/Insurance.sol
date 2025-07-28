@@ -13,6 +13,13 @@ contract Insurance{
     address public manager; // manages insurance policies
     address owner; // can add and remove managers
 
+    enum ActionType{
+        SUBMIT_CLAIM,
+        SYNC_POLICY,
+        PAYMENT_MADE,
+        CLAIM_STATUS
+    }
+
     //errors 
     error PolicyExists();
     error PolicyNonExistent();
@@ -214,19 +221,22 @@ contract Insurance{
      * @param action type of action to perform on data
      * @param data data sent across chain
      */
-    function sendCrossChainMessage(uint16 _dstChainId, bytes calldata _dstAddress, uint8 action, bytes calldata data) external payable{
-
+    function sendCrossChainMessage(uint16 _dstChainId, bytes calldata _dstAddress, uint8 action, bytes calldata data) external payable onlyManager{
+        bytes memory payload = abi.encode(action, data);
+        _lzSend(_dstChainId, _dstAddress, payload, payable(msg.sender), address(0), "", msg.value);
     }
 
     /**
      * Receives message sent from other chain
-     * @param null 
-     * @param null 
-     * @param null 
      * @param payload payload received from sent message
      */
-    function lzReceivee(uint16, bytes memory, uint64, bytes memory payload) internal override {
+    function _nonblockingLzReceive(uint16, bytes memory, uint64, bytes memory payload) internal override {
 
+    }
+
+    // onlyOwner should be able to call this 
+    function setTrustedRemote(uint16 _chainId, bytes calldata _remoteAddress) external onlyOwner{
+        trustedRemoteLookup[_chainId] = _remoteAddress;
     }
 
     receive() external payable {}
