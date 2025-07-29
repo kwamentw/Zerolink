@@ -231,7 +231,43 @@ contract Insurance{
      * @param payload payload received from sent message
      */
     function _nonblockingLzReceive(uint16, bytes memory, uint64, bytes memory payload) internal override {
+        (uint8 action, bytes memory data) = abi.decode(payload, (uint8, bytes));
 
+        if(action == uint8(ActionType.SUBMIT_CLAIM)){
+            (uint256 policyId, uint256 amount) = abi.decode(data, (uint256, uint256));
+            policyClaims[policyId] += amount;
+            emit ClaimSubmitted(policyId);
+        }else if(action == uint8(ActionType.SYNC_POLICY)) {
+            (uint256 policyId, address holder, uint256 coverage, uint256 premium, uint256 expiry, address receiver) = abi.decode(data, (uint256, address, uint256, uint256,uint256, address));
+            policies[policyId] = Policy({
+                policyHolder: holder,
+                coverageLimitAmt: coverage,
+                premiumAmtToPay: premium,
+                expiration: expiry,
+                payCounter: 0,
+                payoutReceiver: receiver,
+                policyCreationTimestamp: block.timestamp
+            });
+
+            holderOfPolicyId[policyId] = holder;
+            emit PolicyCreated(holder, expiry, policyId);
+
+        }
+
+        else if(action == uint8(ActionType.PAYMENT_MADE)){
+            (uint256 policyId, uint256 amountPaid) = abi.decode(data, (uint256, uint256));
+            policies[policyId].payCounter += amountPaid;
+            emit PaymentDeposited(policies[policyId].policyHolder, policyId);
+        }else if(action == uint8(ActionType.CLAIM_STATUS)){
+            (uint256 policyId, uint8 status, uint256 amt) = abi.decode(data, (uint256, uint8, uint256));
+            if(status == 1){
+                claimsPaid[policyId] += amt;
+                emit ClaimApprovedNPaid(policyId, amt);
+            }else{
+                delete policyClaims[policyId];
+                emit ClaimDenied(policyId);
+            }
+        }
     }
 
     // onlyOwner should be able to call this 
