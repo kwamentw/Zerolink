@@ -13,6 +13,7 @@ contract Insurance{
     address public manager; // manages insurance policies
     address owner; // can add and remove managers
 
+    // for cross chain use
     enum ActionType{
         SUBMIT_CLAIM,
         SYNC_POLICY,
@@ -209,11 +210,7 @@ contract Insurance{
         manager = newManager;
         emit ManagerChanged(oldManager, newManager);
     } 
-
-//  * Cross-chain Claim Submission: A user submits a claim on one chain (e.g., Arbitrum), and it’s approved + paid from a vault on another chain (e.g., Ethereum)
-//  * Cross-chain Policy Synchronization: Policies created on one chain are registered on another for verification or off-chain auditing
-//  * Cross-chain Payment Tracking: A payment made on Chain A updates the policy state on Chain B
-
+    
     /**
      * Send a message to another chain
      * @param _dstChainId id of of the destination chain
@@ -315,16 +312,4 @@ contract Insurance{
     }
 }
 
-
-// integrating with layerZero
-// inherit from layerZeroBase
-// Send Cross-Chain Message
-// Receive Cross-Chain Message
-//  Set Trusted Remote address
-
-// import layerzero mocks to help test locally
-
-/**
- * Multichain Claim Status Sync: Notify other chains that a claim was approved, denied, or paid
-
- */
+// import layerzero mocks to help test locally -- i am having problems downloading have to figure this out
