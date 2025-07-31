@@ -22,8 +22,8 @@ contract Insurance{
     }
 
     //errors 
-    error PolicyExists();
-    error PolicyNonExistent();
+    error PolicyExists(); //throws when policy exists
+    error PolicyNonExistent(); // throws when policy does not exist
 
     //events
     event PolicyCreated(address policyHolder, uint256 expiration, uint256 _policyID);
@@ -37,6 +37,9 @@ contract Insurance{
     event ClaimApprovedNPaid(uint256 policyID, uint256 amt);
     event ClaimDenied(uint256 policyidee);
 
+    /**
+     * @dev Policy created for policy holder
+     */
     struct Policy {
         address policyHolder; // owner of policy
         uint256 coverageLimitAmt; // the limit this insurance covers up to
