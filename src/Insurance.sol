@@ -15,10 +15,10 @@ contract Insurance{
 
     // for cross chain use
     enum ActionType{
-        SUBMIT_CLAIM,
-        SYNC_POLICY,
-        PAYMENT_MADE,
-        CLAIM_STATUS
+        SUBMIT_CLAIM, // To submit claims across chains
+        SYNC_POLICY, // To sync existing claims across chains
+        PAYMENT_MADE, // to make policy payments ||
+        CLAIM_STATUS // To sysnce claim status across chains
     }
 
     //errors 
