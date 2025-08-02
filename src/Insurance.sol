@@ -26,15 +26,25 @@ contract Insurance{
     error PolicyNonExistent(); // throws when policy does not exist
 
     //events
+    //Emitted when a policy is created
     event PolicyCreated(address policyHolder, uint256 expiration, uint256 _policyID);
+    //Emitted when a policy is updated
     event PolicyUpdated(address policyHolder, uint256 _policyId);
+    //Emitted when a policy is terminated
     event POlicyTerminated(uint256 policyId, address policyHolder);
+    // Emitted when policy holder makes monthly policy payments
     event PaymentDeposited(address holder, uint256 _policyId);
+    // Emitted when payout claim is processed
     event PayoutProcessed();
+    //Emitted when policy holder submits claim
     event ClaimSubmitted(uint256 claimId);
+    // Emitted when manager approves policy claim by policy holder
     event ClaimApproved();
+    // Emitted when manager of protocol is changed
     event ManagerChanged(address oldAddress, address newAddress);
+    // Emitted when manager approves  and pyas policy claim
     event ClaimApprovedNPaid(uint256 policyID, uint256 amt);
+    //Emitted when policy cliam is denied by manager
     event ClaimDenied(uint256 policyidee);
 
     /**
