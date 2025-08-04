@@ -13,7 +13,6 @@ contract Insurance{
     address public manager; // manages insurance policies
     address owner; // can add and remove managers
 
-    // for cross chain use
     enum ActionType{
         SUBMIT_CLAIM, // To submit claims across chains
         SYNC_POLICY, // To sync existing claims across chains
@@ -325,4 +324,4 @@ contract Insurance{
     }
 }
 
-// import layerzero mocks to help test locally -- i am having problems downloading have to figure this out
+// import layerzero mocks to help test locally
