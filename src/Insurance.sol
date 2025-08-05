@@ -65,9 +65,12 @@ contract Insurance{
 
 
     // one user can hold more than one policy
-    mapping(uint256 policyId => address _policyHolder) holderOfPolicyId; // holders of policies(policyid)
-    mapping (uint256 policyId => uint256 amountClaimed) policyClaims; // amount of tokens claimed under a certain holders policy
-    mapping(uint256 policyId => uint256 amount) claimsPaid; // amount of cliams paid to holders unders the policyId
+    // holders of policies(policyid)
+    mapping(uint256 policyId => address _policyHolder) holderOfPolicyId;
+     // amount of tokens claimed under a certain holders policy
+    mapping (uint256 policyId => uint256 amountClaimed) policyClaims;
+    // amount of cliams paid to holders unders the policyId
+    mapping(uint256 policyId => uint256 amount) claimsPaid; 
 
     constructor(address _manager){
         manager = _manager;
@@ -177,7 +180,6 @@ contract Insurance{
         policyClaims[_policyId] = amount;
 
         emit ClaimSubmitted(claimId);
-
     }
 
     /**
@@ -298,7 +300,7 @@ contract Insurance{
 
     /**
      * returns how many times policy holder has paid insurance
-     * used to insurance payments
+     * used to track insurance payments
      * @param policyId id of policy
      */
     function getPolicyPayCounter(uint256 policyId) public view returns(uint256){
@@ -306,7 +308,7 @@ contract Insurance{
     }
 
     /**
-     * Returns total amount that policy holder has request to claim from a specific policy
+     * Returns total amount that policy holder has requested to claim from a specific policy
      * Tracks the holder's insurance claim request
      * @param policyId id of desired policy
      */
