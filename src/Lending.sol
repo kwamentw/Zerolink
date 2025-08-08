@@ -9,3 +9,12 @@ pragma solidity 0.8.26;
 contract Lending{
 
 }
+
+/**
+ * @title Scanner test
+ * @author 4b
+ * @notice Meant for testing whether a scanner works well
+ */
+contract testScanner{
+    
+}
