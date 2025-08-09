@@ -16,5 +16,13 @@ contract Lending{
  * @notice Meant for testing whether a scanner works well
  */
 contract testScanner{
+    address owner;
+    address pendingOwner;
+
+    constructor(address _owner){
+        owner = _owner;
+    }
+
+    function suggestOwner(address newOwner) external{}
     
 }
