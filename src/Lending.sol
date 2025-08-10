@@ -19,10 +19,21 @@ contract testScanner{
     address owner;
     address pendingOwner;
 
+    modifier onlyOwner(){
+        require(msg.sender == owner, "error");
+    }
+
     constructor(address _owner){
         owner = _owner;
     }
 
     function suggestOwner(address newOwner) external{}
+    /**
+     * delete current owner
+     * check whether there is a pendingowner otherwise reject
+     */
+    function renounceOwnership() external{}
+
+    function acceptOwner() exernal {}
     
 }
