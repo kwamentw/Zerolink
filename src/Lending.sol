@@ -19,21 +19,41 @@ contract testScanner{
     address owner;
     address pendingOwner;
 
-    modifier onlyOwner(){
+    event OwnerSuggested();
+    event OwnerAccepted();
+
+    modifier onlyOwner() {
         require(msg.sender == owner, "error");
+        _;
     }
 
     constructor(address _owner){
         owner = _owner;
     }
 
-    function suggestOwner(address newOwner) external{}
+    function suggestOwner(address newOwner) external onlyOwner{
+        require(newOwner != address(0), "not a valid address");
+        pendingOwner = newOwner;
+        emit OwnerSuggested();
+    }
     /**
      * delete current owner
      * check whether there is a pendingowner otherwise reject
      */
-    function renounceOwnership() external{}
+    function renounceOwnership() internal{
+        delete owner;
+    }
 
-    function acceptOwner() exernal {}
+    function acceptOwner() external {
+        require(msg.sender == pendingOwner,"not allowed");
+        renounceOwnership();
+        owner = pendingOwner;
+        pendingOwner = address(0);
+
+        emit OwnerAccepted();
+
+    } // add emit old and new owners
+
+    // try role base type too
     
 }
