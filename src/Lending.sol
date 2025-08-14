@@ -58,3 +58,8 @@ contract testScanner1{
     // try role base type too
     
 }
+
+
+contract TestScanner2{
+    
+}
