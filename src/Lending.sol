@@ -61,5 +61,6 @@ contract testScanner1{
 
 
 contract TestScanner2{
-    
+    //lets try another for of ownable
+    // we have to test the weird cases for this scanner
 }
