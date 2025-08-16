@@ -16,10 +16,6 @@ contract testScanner1{
 
     mapping(uint256 id => address prevOwner) public prevOwners;
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "error");
-        _;
-    }
 
     constructor(address _owner){
         owner = _owner;
@@ -31,7 +27,7 @@ contract testScanner1{
      * only the owner has to be able to call this
      */
     function suggestOwner(address newOwner) external {
-        require(pendingOwner == address(0), "set already");
+        require(pendingOwner == address(0), "invalid address");
         require(newOwner != address(0), "not a valid address");
         pendingOwner = newOwner;
         emit OwnerSuggested();
@@ -51,8 +47,8 @@ contract testScanner1{
      */
     function acceptOwner() external {
         require(msg.sender == pendingOwner,"not allowed");
-        renounceOwnership();
         address oldOwner = owner;
+        renounceOwnership();
         ownerCounter++;
         prevOwners[ownerCounter] = oldOwner;
         owner = pendingOwner;
