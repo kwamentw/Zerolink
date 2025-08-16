@@ -22,6 +22,10 @@ contract testScanner1{
         owner = _owner;
     }
 
+    /**
+     * A function to initiate new owner
+     * @param newOwner new owner address
+     */
     function suggestOwner(address newOwner) external onlyOwner{
         require(pendingOwner == address(0), "set already");
         require(newOwner != address(0), "not a valid address");
@@ -30,11 +34,17 @@ contract testScanner1{
     }
 
 
+    /**
+     * Helps old owner renounce ownership
+     */
     function renounceOwnership() internal{
         require(pendingOwner != address(0), "invalid");
         delete owner;
     }
 
+    /**
+     * Function to help new owner accept ownership
+     */
     function acceptOwner() external {
         require(msg.sender == pendingOwner,"not allowed");
         renounceOwnership();
