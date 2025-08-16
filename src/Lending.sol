@@ -2,15 +2,6 @@
 pragma solidity 0.8.26;
 
 /**
- * @title Lending
- * @author 4B
- * @notice please this is not production code
- */
-contract Lending{
-
-}
-
-/**
  * @title Scanner test
  * @author 4b
  * @notice Meant for testing whether a scanner works well
@@ -51,19 +42,9 @@ contract testScanner1{
         owner = pendingOwner;
         pendingOwner = address(0);
 
-        emit OwnerAccepted(oldOwner, owner);
+        emit OwnerAccepted(owner, oldOwner);
 
     }
-
-    // try role base type too
     
 }
 
-
-contract TestScanner2{
-    //lets try another for of ownable
-    // we have to test the weird cases for this scanner
-    //wrong emits
-    // false zero checks
-    //access control
-}
