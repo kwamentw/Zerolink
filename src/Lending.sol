@@ -9,9 +9,12 @@ pragma solidity 0.8.26;
 contract testScanner1{
     address owner;
     address pendingOwner;
+    uint256 ownerCounter;
 
     event OwnerSuggested();
     event OwnerAccepted(address oldOwner, address newOwner);
+
+    mapping(uint256 id => address prevOwner) public prevOwners;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "error");
@@ -25,8 +28,9 @@ contract testScanner1{
     /**
      * A function to initiate new owner
      * @param newOwner new owner address
+     * only the owner has to be able to call this
      */
-    function suggestOwner(address newOwner) external onlyOwner{
+    function suggestOwner(address newOwner) external {
         require(pendingOwner == address(0), "set already");
         require(newOwner != address(0), "not a valid address");
         pendingOwner = newOwner;
@@ -49,6 +53,8 @@ contract testScanner1{
         require(msg.sender == pendingOwner,"not allowed");
         renounceOwnership();
         address oldOwner = owner;
+        ownerCounter++;
+        prevOwners[ownerCounter] = oldOwner;
         owner = pendingOwner;
         pendingOwner = address(0);
 
@@ -56,5 +62,15 @@ contract testScanner1{
 
     }
     
+    function getPrevOwners() external view returns(address[] memory previOwners){
+        for (uint256 i=0; i<ownerCounter;){
+            address pOwner = prevOwners[i];
+            unchecked {
+                i++;
+            }
+            previOwners[i] = pOwner;
+            
+        }
+    }
 }
 
