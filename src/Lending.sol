@@ -58,6 +58,9 @@ contract testScanner1{
 
     }
     
+    /**
+     * Gets previous owners
+     */
     function getPrevOwners() external view returns(address[] memory previOwners){
         for (uint256 i=0; i<ownerCounter;){
             address pOwner = prevOwners[i];
@@ -68,5 +71,13 @@ contract testScanner1{
             
         }
     }
+
+    /**
+     * SOME IDEAS
+     * check for bounds(for i=0; i<=length; i++)
+     * Casting problems
+     * amount validation
+     * MAth problems
+     */
 }
 
