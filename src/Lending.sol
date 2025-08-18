@@ -72,10 +72,14 @@ contract testScanner1{
         }
     }
 
+    function getNoOfOwners() external view returns(uint16){
+        return uint16(ownerCounter);
+    }
+
     /**
      * SOME IDEAS
      * check for bounds(for i=0; i<=length; i++)
-     * Casting problems
+     * Casting problems - checked
      * amount validation
      * MAth problems
      */
