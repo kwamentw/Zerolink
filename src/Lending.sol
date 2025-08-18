@@ -76,9 +76,11 @@ contract testScanner1{
         return uint16(ownerCounter);
     }
 
+    receive()payable external {}
+
     /**
      * SOME IDEAS
-     * check for bounds(for i=0; i<=length; i++)
+     * check for bounds(for i=0; i<=length; i++) - checked
      * Casting problems - checked
      * amount validation
      * MAth problems
