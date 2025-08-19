@@ -76,7 +76,11 @@ contract testScanner1{
         return uint16(ownerCounter);
     }
 
-    receive()payable external {}
+    receive() payable external {}
+
+    function sendOut(address receiver, uint256 amount) external payable{
+        (bool check,) = receiver.call{value: amount}("");
+    }
 
     /**
      * SOME IDEAS
