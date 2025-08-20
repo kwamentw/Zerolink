@@ -72,12 +72,18 @@ contract testScanner1{
         }
     }
 
+    /**
+     * Lets see whether the scanner can catch the vuln here
+     */
     function getNoOfOwners() external view returns(uint16){
         return uint16(ownerCounter);
     }
 
     receive() payable external {}
 
+    /**
+     * Lets see whether the scanner can catch the two vulns
+     */
     function sendOut(address receiver, uint256 amount) external payable{
         (bool check,) = receiver.call{value: amount}("");
     }
