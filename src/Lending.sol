@@ -16,6 +16,11 @@ contract testScanner1{
 
     mapping(uint256 id => address prevOwner) public prevOwners;
 
+    modifier onlyOwner{
+        require(msg.sender == owner);
+        _;
+    }
+
 
     constructor(address _owner){
         owner = _owner;
@@ -29,6 +34,7 @@ contract testScanner1{
     function suggestOwner(address newOwner) external {
         require(pendingOwner == address(0), "invalid address");
         require(newOwner != address(0), "not a valid address");
+        require(owner == msg.sender, "Owner is not authorised");
         pendingOwner = newOwner;
         emit OwnerSuggested();
     }
@@ -38,6 +44,7 @@ contract testScanner1{
      * Helps old owner renounce ownership
      */
     function renounceOwnership() internal{
+        require(owner == msg.sender, "Owner is not authorised");
         require(pendingOwner != address(0), "invalid");
         delete owner;
     }
@@ -82,18 +89,13 @@ contract testScanner1{
         return number;
     }
 
-    /**
-     * Lets see whether the scanner can catch the vuln here
-     */
+
     function getNoOfOwners() external view returns(uint16){
         return uint16(ownerCounter);
     }
 
     receive() payable external {}
 
-    /**
-     * Lets see whether the scanner can catch the two vulns
-     */
     function sendOut(address receiver, uint256 amount) external payable{
         (bool check,) = receiver.call{value: amount}("");
     }
