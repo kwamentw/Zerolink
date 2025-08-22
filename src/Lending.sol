@@ -72,6 +72,16 @@ contract testScanner1{
         }
     }
 
+    function getNumOfOwners() external view returns(uint256){
+        uint256 number;
+
+        for(uint256 i=0; i<ownerCounter; i--){
+            number += 1; 
+        }
+
+        return number;
+    }
+
     /**
      * Lets see whether the scanner can catch the vuln here
      */
@@ -87,13 +97,5 @@ contract testScanner1{
     function sendOut(address receiver, uint256 amount) external payable{
         (bool check,) = receiver.call{value: amount}("");
     }
-
-    /**
-     * SOME IDEAS
-     * check for bounds(for i=0; i<=length; i++) - checked
-     * Casting problems - checked
-     * amount validation
-     * MAth problems
-     */
 }
 
