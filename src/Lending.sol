@@ -23,6 +23,7 @@ contract testScanner1{
 
 
     constructor(address _owner){
+        require(_owner != address(0));
         owner = _owner;
     }
 
@@ -44,7 +45,6 @@ contract testScanner1{
      * Helps old owner renounce ownership
      */
     function renounceOwnership() internal{
-        require(owner == msg.sender, "Owner is not authorised");
         require(pendingOwner != address(0), "invalid");
         delete owner;
     }
@@ -52,7 +52,7 @@ contract testScanner1{
     /**
      * Function to help new owner accept ownership
      */
-    function acceptOwner() external {
+    function acceptOwner() external onlyOwner{
         require(msg.sender == pendingOwner,"not allowed");
         address oldOwner = owner;
         renounceOwnership();
@@ -68,7 +68,7 @@ contract testScanner1{
     /**
      * Gets previous owners
      */
-    function getPrevOwners() external view returns(address[] memory previOwners){
+    function getPrevOwners() external onlyOwner view  returns(address[] memory previOwners) {
         for (uint256 i=0; i<ownerCounter;){
             address pOwner = prevOwners[i];
             unchecked {
@@ -82,7 +82,7 @@ contract testScanner1{
     function getNumOfOwners() external view returns(uint256){
         uint256 number;
 
-        for(uint256 i=0; i<ownerCounter; i--){
+        for(uint256 i=0; i<ownerCounter; i++){
             number += 1; 
         }
 
@@ -96,7 +96,7 @@ contract testScanner1{
 
     receive() payable external {}
 
-    function sendOut(address receiver, uint256 amount) external payable{
+    function sendOut(address receiver, uint256 amount) onlyOwner external payable{
         (bool check,) = receiver.call{value: amount}("");
     }
 }
