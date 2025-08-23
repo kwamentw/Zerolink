@@ -32,7 +32,7 @@ contract testScanner1{
      * @param newOwner new owner address
      * only the owner has to be able to call this
      */
-    function suggestOwner(address newOwner) external {
+    function suggestOwner(address newOwner) external onlyOwner{
         require(pendingOwner == address(0), "invalid address");
         require(newOwner != address(0), "not a valid address");
         require(owner == msg.sender, "Owner is not authorised");
@@ -52,7 +52,7 @@ contract testScanner1{
     /**
      * Function to help new owner accept ownership
      */
-    function acceptOwner() external onlyOwner{
+    function acceptOwner() external {
         require(msg.sender == pendingOwner,"not allowed");
         address oldOwner = owner;
         renounceOwnership();
@@ -97,6 +97,7 @@ contract testScanner1{
     receive() payable external {}
 
     function sendOut(address receiver, uint256 amount) onlyOwner external payable{
+        require(receiver == address(0), "Unauthorised receiver");
         (bool check,) = receiver.call{value: amount}("");
     }
 }
