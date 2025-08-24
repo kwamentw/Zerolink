@@ -89,7 +89,6 @@ contract testScanner1{
         return number;
     }
 
-
     function getNoOfOwners() external view returns(uint16){
         return uint16(ownerCounter);
     }
@@ -101,4 +100,13 @@ contract testScanner1{
         (bool check,) = receiver.call{value: amount}("");
     }
 }
+
+/**
+ * I think i should try developing one of the defi concepts
+ * i dont know yet
+ * But it is between streaming, lending or something with swapping of tokens and earning rewards
+ * what of these AI agents too
+ * it has to be something used frequently
+ * Probably something wey go make i undersstand liquidations
+ */
 
